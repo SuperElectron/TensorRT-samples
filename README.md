@@ -18,7 +18,7 @@ Real-time inference using TensorRT.
 
 1. Download a [yolo model](https://github.com/ultralytics/ultralytics)
 2. Update the Makefile with your ARCH_BIN (see #reference for details)
-3. Start the docker container. 
+3. Start the docker container.
 ```bash
 make build
 make run
@@ -49,7 +49,7 @@ $ cmake .. && make -j
 
 __modules__
 
-the make CMakeLists.txt builds these folders:
+the main CMakeLists.txt builds these folders:
 
 ```text
 converter ----> converts yolo model to tensorRT serialized engine file (trt engine file)
@@ -135,8 +135,10 @@ __tao converter__
 # make run puts you inside the docker container
 
 # before running this, check the README.txt in /src/scripts/tao-converter and install any dependencies and set paths
-root@mat-XPS-15-9560:/src/scripts/tao-converter# export MODEL=~/path/to/folder
-root@mat-XPS-15-9560:/src/scripts/tao-converter# ./tao-converter -k ess -t fp16 -e $MODEL/ess.engine -o output $MODEL/ess.etlt
+/tmp/tao-converter# export MODEL_PATH=~/path/to/folder
+/tmp/tao-converter# export MODEL=replace_with_model_name
+/tmp/tao-converter# export KEY=replace_with_nvidia_key
+/tmp/tao-converter# ./tao-converter -k "${KEY}" -t fp16 -e "${MODEL_PATH}/${MODEL}.engine" -o output "${MODEL_PATH}/${MODEL}.etlt"
 
 [INFO] ----------------------------------------------------------------
 [INFO] Input filename:   /tmp/filer9wcjU
@@ -145,3 +147,35 @@ root@mat-XPS-15-9560:/src/scripts/tao-converter# ./tao-converter -k ess -t fp16 
 [INFO] Producer name:    pytorch
 [INFO] Producer version: 1.10
 ```
+
+__trtexec__
+
+- ask for help
+```bash
+$ /usr/src/tensorrt/bin/trtexec --help
+```
+
+- profile model speed
+
+```bash
+# load in a onnx file
+$ export MODEL_PATH=/path/to/folder
+$ export ONNX_NAME=model.onnx
+$ export TRT_NAME=model.engine
+$ /usr/src/tensorrt/bin/trtexec --onnx="${MODEL_PATH}/${ONNX_NAME}" --iterations=5 --workspace=4096
+# load in a trt engine file
+$ /usr/src/tensorrt/bin/trtexec --loadEngine="${MODEL_PATH}/${TRT_NAME}" --fp16 --batch=1 --iterations=50 --workspace=4096
+# save logs to a file
+$ /usr/src/tensorrt/bin/trtexec --loadEngine="${MODEL_PATH}/${TRT_NAME}" --fp16 --batch=1 --iterations=50 --workspace=4096 > stats.log 
+```
+
+- model conversion
+
+```bash
+$ export MODEL_PATH=/path/to/folder
+$ export MODEL_NAME=model
+# convert the model to FP16 (if supported on hardware)
+$ /usr/src/tensorrt/bin/trtexec --onnx="${MODEL_PATH}/${MODEL_NAME}.onnx" --saveEngine="${MODEL_PATH}/${MODEL_NAME}_fp16.engine" --useCudaGraph --fp16 > "${MODEL_NAME}_fp16.log" 
+  
+```
+
