@@ -1,0 +1,12 @@
+
+# IDE files
+.idea/
+.vscode/
+
+# cmake files
+cmake-build-*
+
+# project files
+src/models
+build*
+.cache
