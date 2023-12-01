@@ -1,7 +1,8 @@
 #pragma once
 
-#include "tensorrt-cpp-api/engine.h"
 #include <fstream>
+
+#include "engine/engine.h"
 
 // Utility method for checking if a file exists on disk
 inline bool doesFileExist(const std::string &name)

@@ -53,10 +53,10 @@ int main(int argc, char** argv) {
 	 * 		$ trtexec --onnx=model.onnx --saveEngine=model.trt --best --buildOnly --workspace=4096
 	 *
 	 */
-	std::cout << "** Convert ONNX TO TensorRT **";
+	std::cout << "** Convert ONNX TO TensorRT **\n";
 	if (argc != 2) {
-		std::cerr << "Usage    | $ " << argv[0] << " <path_to_onnx_model>" << std::endl;
-		std::cout << "TRy this | $ " << argv[0] << " /src/models/yourModel.onnx" << std::endl;
+		std::cerr << "Usage    \t\t$ " << argv[0] << " <path_to_onnx_model>" << std::endl;
+		std::cout << "Try this \t\t$ " << argv[0] << " /src/models/yourModel.onnx" << std::endl;
 		return 1;
 	}
 

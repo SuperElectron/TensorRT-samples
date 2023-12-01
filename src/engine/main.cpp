@@ -1,4 +1,4 @@
-#include "tensorrt-cpp-api/engine.h"
+#include "engine.h"
 #include <opencv2/opencv.hpp>
 #include <chrono>
 
@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 		std::cout << "Error: Must specify the model path" << std::endl;
 		std::cout << "Usage:   " << argv[0] << " /path/to/onnx/model.onnx /path/to/image.jpg" << std::endl;
 		std::cout << "Example: " << argv[0] << " /src/models/yolov8m.onnx /src/images/cars.jpg" << std::endl;
-		return -1;
+		return EXIT_FAILURE;
 	}
 
 	// Specify our GPU inference configuration options
@@ -99,22 +99,6 @@ int main(int argc, char *argv[])
 	if (!succ)
 		throw std::runtime_error("Unable to run inference.");
 
-	size_t numIterations = 100;
-
-//	// Benchmark the inference time
-//	auto t1 = Clock::now();
-//	for (size_t i = 0; i < numIterations; ++i)
-//	{
-//		featureVectors.clear();
-//		engine.runInference(inputs, featureVectors, subVals, divVals, normalize);
-//	}
-//	auto t2 = Clock::now();
-//	double totalTime = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
-//
-//	std::cout << "Success! Average time per inference: "
-//			  << totalTime / numIterations / static_cast<float>(inputs[0].size())
-//			  << " ms, for batch size of: " << inputs[0].size() << std::endl;
-
 	// Print the feature vectors
 	for (size_t batch = 0; batch < featureVectors.size(); ++batch)
 	{
@@ -135,6 +119,5 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	// any post-processing can go here (e.g. convert feature vector into bounding boxes)
-	return 0;
+	return EXIT_SUCCESS;
 }

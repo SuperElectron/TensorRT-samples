@@ -7,7 +7,11 @@
 
 # TensorRT C++ Samples
 
-- real-time inference using TensorRT 
+Real-time inference using TensorRT.
+- convert onnx to trt on target hardware
+- run yolo models on target hardware (and it automatically creates the trt engine file)
+- run engine file on target hardware
+
 
 ## Getting Started
 
@@ -31,6 +35,53 @@ cmake ..
 make -j -l4
 
 ```
+
+- alternatively, if you want to build an individual module alone, you can follow these steps
+
+```bash
+# go to module of interest
+$ cd /src/engine
+# create build directory
+$ mkdir build && cd build
+# build the project
+$ cmake .. && make -j
+```
+
+__modules__
+
+the make CMakeLists.txt builds these folders:
+
+```text
+converter ----> converts yolo model to tensorRT serialized engine file (trt engine file)
+engine    ----> runs a trt engine file
+yolo      ----> runs a yolo model (converts to trt engine and runs)
+```
+
+When you build in the main directory here is what the outputs look like
+
+```bash
+/src/build# tree -L 2 -I 'CMakeFiles'
+.
+|-- CMakeCache.txt
+|-- Makefile
+|-- cmake_install.cmake
+|-- converter
+|   |-- Makefile
+|   |-- cmake_install.cmake
+|   `-- onnx2trt                <<<<<<<<<< convert onnx 2 trt
+|-- engine
+|   |-- Makefile
+|   |-- cmake_install.cmake
+|   `-- engine                  <<<<<<<<<< run serialized engine file
+`-- yolo
+    |-- Makefile
+    |-- cmake_install.cmake
+    |-- detectImage             <<<<<<<<<< run object detection on an image with yolo model
+    |-- detectWebcam            <<<<<<<<<< run object detection on an webcam with yolo model
+    |-- libyolo.so
+    `-- profile                 <<<<<<<<<< calculate yolo model execution time when doing detection on image
+```
+
 
 # References
 

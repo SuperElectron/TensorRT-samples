@@ -30,7 +30,7 @@ endif()
 # appends some common paths
 set(_TensorRT_SEARCH_NORMAL
         PATHS "/usr"
-        )
+)
 list(APPEND _TensorRT_SEARCHES _TensorRT_SEARCH_NORMAL)
 
 # Include dir
