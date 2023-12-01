@@ -49,7 +49,7 @@ $ cmake .. && make -j
 
 __modules__
 
-the make CMakeLists.txt builds these folders:
+the main CMakeLists.txt builds these folders:
 
 ```text
 converter ----> converts yolo model to tensorRT serialized engine file (trt engine file)
